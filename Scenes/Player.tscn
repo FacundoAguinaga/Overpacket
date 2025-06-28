@@ -1,0 +1,81 @@
+[gd_scene load_steps=14 format=3 uid="uid://ciakye7lwx6y7"]
+
+[ext_resource type="Script" uid="uid://b676fx0cib1yh" path="res://Scripts/Player/player_controller.gd" id="1_kyqiw"]
+[ext_resource type="PackedScene" uid="uid://c6qh8l7ixrag0" path="res://Assets/3D Models/Jugador.glb" id="1_v0iea"]
+[ext_resource type="Script" uid="uid://de50v2mbjg2ka" path="res://Scripts/Player/idleState.gd" id="3_dewec"]
+[ext_resource type="Script" uid="uid://dlfwffh1epkgp" path="res://Scripts/Player/moveState.gd" id="4_5ixxa"]
+[ext_resource type="Texture2D" uid="uid://b1qupk5hl3rn0" path="res://Assets/Textures/aimIdicator.png" id="5_5ixxa"]
+[ext_resource type="Script" uid="uid://ccpfhksfrolxx" path="res://Scripts/Player/aimState.gd" id="5_nn08x"]
+[ext_resource type="Script" uid="uid://bdf8dkoeqaqt0" path="res://addons/footprint-trail/footprint-trail.gd" id="8_bhhdu"]
+[ext_resource type="Texture2D" uid="uid://d0rdhsnu7vejp" path="res://Assets/Textures/footprint.png" id="9_megsn"]
+[ext_resource type="PackedScene" uid="uid://dotmp8x7d33ru" path="res://Scenes/cleanBox.tscn" id="10_ksbbd"]
+[ext_resource type="PackedScene" uid="uid://bxkwro1g5xlj8" path="res://Scenes/box_spawner.tscn" id="10_yoq75"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cvnsp"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_kyqiw"]
+radius = 0.75
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yoq75"]
+transparency = 1
+albedo_color = Color(0, 0, 0, 1)
+albedo_texture = ExtResource("9_megsn")
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_kyqiw")
+throw_angle_degrees = 10.0
+
+[node name="playerModel" parent="." instance=ExtResource("1_v0iea")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="playerCol" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_cvnsp")
+
+[node name="grabArea" type="Area3D" parent="."]
+
+[node name="areaCol" type="CollisionShape3D" parent="grabArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.9631903)
+shape = SubResource("SphereShape3D_kyqiw")
+
+[node name="holdPoint" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.97783995)
+
+[node name="States" type="Node" parent="."]
+
+[node name="Idle" type="Node" parent="States"]
+script = ExtResource("3_dewec")
+
+[node name="Move" type="Node" parent="States"]
+script = ExtResource("4_5ixxa")
+
+[node name="Aim" type="Node" parent="States"]
+script = ExtResource("5_nn08x")
+
+[node name="aimIndicator" type="Node3D" parent="."]
+visible = false
+
+[node name="SpringArm3D" type="SpringArm3D" parent="aimIndicator"]
+
+[node name="Sprite3D" type="Sprite3D" parent="aimIndicator/SpringArm3D"]
+transform = Transform3D(-1.3113417e-08, 0.3, -1.3113417e-08, 0, -1.3113417e-08, -0.3, -0.3, -1.3113417e-08, 5.7320567e-16, 0, -1, -2)
+texture = ExtResource("5_5ixxa")
+
+[node name="FootprintTrail" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+script = ExtResource("8_bhhdu")
+footprint_material = SubResource("StandardMaterial3D_yoq75")
+footprint_scale = 0.3000000000029104
+distance_between_footprints = 1.0
+time_to_live = 3.0
+metadata/_custom_type_script = "uid://bdf8dkoeqaqt0"
+
+[node name="Components" type="Node3D" parent="."]
+
+[node name="boxSpawner" parent="Components" instance=ExtResource("10_yoq75")]
+scene_to_spawn = ExtResource("10_ksbbd")
+
+[node name="spawnPoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.0377932)
+
+[connection signal="body_entered" from="grabArea" to="." method="_on_grab_area_body_entered"]
+[connection signal="body_exited" from="grabArea" to="." method="_on_grab_area_body_exited"]

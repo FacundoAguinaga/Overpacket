@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bxkwro1g5xlj8"]
+
+[ext_resource type="Script" uid="uid://bs7ut4vumv722" path="res://Scripts/box_spawner.gd" id="1_iy5p0"]
+
+[node name="boxSpawner" type="Node3D"]
+script = ExtResource("1_iy5p0")
+
+[node name="spawnPoint" type="Marker3D" parent="."]

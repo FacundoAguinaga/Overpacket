@@ -1,0 +1,94 @@
+[gd_scene load_steps=16 format=3 uid="uid://772qyf35m6k0"]
+
+[ext_resource type="Texture2D" uid="uid://gr64ol6h41nr" path="res://addons/kenney_prototype_textures/dark/texture_01.png" id="1_au00k"]
+[ext_resource type="PackedScene" uid="uid://bjlnp1p8d5xdh" path="res://Scenes/conveyor_block.tscn" id="1_iwv7r"]
+[ext_resource type="PackedScene" uid="uid://ciakye7lwx6y7" path="res://Scenes/Player.tscn" id="2_707cn"]
+[ext_resource type="PackedScene" uid="uid://befbhyv60pqby" path="res://Scenes/Box.tscn" id="3_707cn"]
+[ext_resource type="Script" uid="uid://fck6nrs60hrc" path="res://Scenes/camera_controller.gd" id="4_mq1bj"]
+[ext_resource type="PackedScene" uid="uid://bnueymtkbc5ql" path="res://Scenes/maquina.tscn" id="6_kt01x"]
+[ext_resource type="PackedScene" uid="uid://dotmp8x7d33ru" path="res://Scenes/cleanBox.tscn" id="7_p7j4p"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mq1bj"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_iwv7r"]
+sky_material = SubResource("ProceduralSkyMaterial_mq1bj")
+
+[sub_resource type="Environment" id="Environment_kt01x"]
+background_mode = 2
+sky = SubResource("Sky_iwv7r")
+tonemap_mode = 2
+glow_enabled = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p7j4p"]
+size = Vector3(100, 0.001, 100)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0fcji"]
+albedo_texture = ExtResource("1_au00k")
+uv1_triplanar = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_dqfvb"]
+material = SubResource("StandardMaterial3D_0fcji")
+size = Vector2(100, 100)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_iwv7r"]
+
+[sub_resource type="MeshLibrary" id="MeshLibrary_iwv7r"]
+
+[node name="TestWorld" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_kt01x")
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_p7j4p")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("PlaneMesh_dqfvb")
+
+[node name="Player" parent="." instance=ExtResource("2_707cn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3654902, 0)
+
+[node name="picableObject" parent="." instance=ExtResource("3_707cn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4422189, 0.74567646, -1.6460234)
+
+[node name="cameraRig" type="Node3D" parent="." node_paths=PackedStringArray("target")]
+script = ExtResource("4_mq1bj")
+target = NodePath("../Player")
+idle_zoom_distance = 5.0
+running_zoom_distance = 6.0
+
+[node name="SpringArm3D" type="SpringArm3D" parent="cameraRig"]
+transform = Transform3D(1, 0, 0, 0, 0.42261824, 0.9063078, 0, -0.9063078, 0.42261824, 0, 0, 0)
+shape = SubResource("SphereShape3D_iwv7r")
+spring_length = 10.0
+
+[node name="Camera3D" type="Camera3D" parent="cameraRig/SpringArm3D"]
+
+[node name="GridMap" type="GridMap" parent="."]
+mesh_library = SubResource("MeshLibrary_iwv7r")
+cell_size = Vector3(1, 1, 1)
+
+[node name="conveyorBlock" parent="." instance=ExtResource("1_iwv7r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.7, -3.5)
+
+[node name="conveyorBlock2" parent="." instance=ExtResource("1_iwv7r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.7, -3.5)
+
+[node name="conveyorBlock3" parent="." instance=ExtResource("1_iwv7r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.7, -3.5)
+
+[node name="maquina" parent="." instance=ExtResource("6_kt01x")]
+transform = Transform3D(-8.742278e-08, 0, -2, 0, 2, 0, 2, 0, -8.742278e-08, 3.7, 1.3000001, -3.5)
+required_input_scene = ExtResource("7_p7j4p")
+resulting_output_scene = ExtResource("3_707cn")
+processing_time = 4.0

@@ -1,0 +1,156 @@
+[gd_scene load_steps=16 format=3 uid="uid://bnueymtkbc5ql"]
+
+[ext_resource type="PackedScene" uid="uid://ddkae1ami3eqa" path="res://Assets/3D Models/maquina.glb" id="1_e2s8n"]
+[ext_resource type="Script" uid="uid://bqcdggqts7jgt" path="res://Scenes/maquina.gd" id="1_ny4sa"]
+[ext_resource type="Script" uid="uid://125y2c2k0ttr" path="res://Scripts/area_3d.gd" id="2_ny4sa"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vdp2x"]
+size = Vector3(0.47509766, 2.1000001, 1.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eci00"]
+size = Vector3(0.46887207, 2.1000001, 1.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_toh6s"]
+size = Vector3(0.3, 0.7, 1.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lhsra"]
+size = Vector3(1, 0.90000004, 1.7)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e2s8n"]
+size = Vector3(1, 0.51904297, 1.6094971)
+
+[sub_resource type="Animation" id="Animation_ny4sa"]
+length = 0.001
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("door")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, -0.041, -1, 0.396)
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("door2")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, -0.041, -1, -0.49)
+
+[sub_resource type="Animation" id="Animation_vdp2x"]
+resource_name = "close"
+length = 4.0
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("door")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, -0.041, -1, 0.396, 1, 1, -0.040625036, -0.1574626, 0.3956887, 3, 1, -0.040625036, -0.1574626, 0.3956887, 4, 1, -0.041, -1, 0.396)
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("door2")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, -0.041, -1, -0.49, 1, 1, -0.040625036, -0.1574626, -0.48962086, 3, 1, -0.040625036, -0.1574626, -0.48962086, 4, 1, -0.041, -1, -0.49)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_eci00"]
+_data = {
+&"RESET": SubResource("Animation_ny4sa"),
+&"closeopen": SubResource("Animation_vdp2x")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yaa7k"]
+size = Vector3(0.9526367, 0.7866211, 0.18920898)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pwqxn"]
+albedo_color = Color(0.89411765, 0.28235295, 0.17254902, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_8a2lq"]
+material = SubResource("StandardMaterial3D_pwqxn")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ny4sa"]
+size = Vector3(0.7437891, 0.6709717, 0.22424316)
+
+[node name="processingMachine" type="StaticBody3D"]
+script = ExtResource("1_ny4sa")
+
+[node name="maquina" parent="." instance=ExtResource("1_e2s8n")]
+
+[node name="machineCol" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5124512, 0.04999993, -1.1920929e-07)
+shape = SubResource("BoxShape3D_vdp2x")
+
+[node name="machineCol2" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.615564, 0.04999993, -1.1920929e-07)
+shape = SubResource("BoxShape3D_eci00")
+
+[node name="machineCol3" type="CollisionShape3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2.9802322e-08, -0.6500001, 0.49999988)
+shape = SubResource("BoxShape3D_toh6s")
+
+[node name="machineCol4" type="CollisionShape3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2.9802322e-08, -0.6500001, -0.70000017)
+shape = SubResource("BoxShape3D_toh6s")
+
+[node name="machineCol5" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.76307714, 0.049999982)
+shape = SubResource("BoxShape3D_lhsra")
+
+[node name="machineCol6" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8432141, 0)
+shape = SubResource("BoxShape3D_lhsra")
+
+[node name="transportArea" type="Area3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.49999994, -0.32337877, 0.37284964)
+script = ExtResource("2_ny4sa")
+direction = Vector3(1, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="transportArea"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0.2888041, -0.19590059, 0.5)
+shape = SubResource("BoxShape3D_e2s8n")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="OutputPoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.31487465)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_eci00")
+}
+
+[node name="colBox" type="Area3D" parent="."]
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="colBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.02368164, -0.10668945, 0.25427246)
+shape = SubResource("BoxShape3D_yaa7k")
+
+[node name="door" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.85877943, 0, 0, 0, 0.9109202, 0, 0, 0, 0.051152956, -0.041, -1, 0.396)
+mesh = SubResource("BoxMesh_8a2lq")
+
+[node name="door2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.85877943, 0, 0, 0, 0.9109202, 0, 0, 0, 0.051152956, -0.041, -1, -0.49)
+mesh = SubResource("BoxMesh_8a2lq")
+
+[node name="pushArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.06259763, -0.05318606, 0.36809838)
+monitoring = false
+monitorable = false
+
+[node name="inCol2" type="CollisionShape3D" parent="pushArea"]
+shape = SubResource("BoxShape3D_ny4sa")
+disabled = true
+
+[node name="inCol" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.06259763, -0.05318606, 0.36809838)
+shape = SubResource("BoxShape3D_ny4sa")
+disabled = true
+
+[node name="pushPos" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33571357, 1)
+
+[connection signal="body_entered" from="pushArea" to="." method="_on_push_area_body_entered"]

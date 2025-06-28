@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://dotmp8x7d33ru"]
+
+[ext_resource type="PackedScene" uid="uid://cto7swbu101xj" path="res://Scenes/Grabblable.tscn" id="1_phum5"]
+[ext_resource type="PackedScene" uid="uid://bd1ln46j0lty7" path="res://Scenes/frictionParticles.tscn" id="2_xr6a7"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_yfk0f"]
+
+[node name="picableObject" instance=ExtResource("1_phum5")]
+
+[node name="frictionParticle" parent="." index="1" instance=ExtResource("2_xr6a7")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0.1, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." index="2"]
+transform = Transform3D(0.45, 0, 0, 0, 0.45, 0, 0, 0, 0.45, 0, 0, 0)
+mesh = SubResource("BoxMesh_yfk0f")
+skeleton = NodePath("../pickableCol")
+
+[editable path="frictionParticle"]
