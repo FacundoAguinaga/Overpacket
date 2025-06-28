@@ -1,15 +1,25 @@
-[gd_scene load_steps=4 format=3 uid="uid://befbhyv60pqby"]
+[gd_scene load_steps=6 format=3 uid="uid://befbhyv60pqby"]
 
 [ext_resource type="PackedScene" uid="uid://cto7swbu101xj" path="res://Scenes/Grabblable.tscn" id="1_8s0t8"]
 [ext_resource type="PackedScene" uid="uid://dmer7deiwm23v" path="res://Assets/3D Models/Caja.glb" id="2_42nxc"]
 [ext_resource type="PackedScene" uid="uid://bd1ln46j0lty7" path="res://Scenes/frictionParticles.tscn" id="3_mckbn"]
 
-[node name="picableObject" instance=ExtResource("1_8s0t8")]
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_mckbn"]
+bounce = 0.4
 
-[node name="Caja" parent="." index="1" instance=ExtResource("2_42nxc")]
+[sub_resource type="BoxShape3D" id="BoxShape3D_mckbn"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[node name="picableObject" instance=ExtResource("1_8s0t8")]
+physics_material_override = SubResource("PhysicsMaterial_mckbn")
+
+[node name="Caja" parent="." index="0" instance=ExtResource("2_42nxc")]
 transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
 
-[node name="frictionParticle" parent="." index="2" instance=ExtResource("3_mckbn")]
+[node name="frictionParticle" parent="." index="1" instance=ExtResource("3_mckbn")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0.1, 0)
+
+[node name="pickableCol" type="CollisionShape3D" parent="." index="2"]
+shape = SubResource("BoxShape3D_mckbn")
 
 [editable path="frictionParticle"]

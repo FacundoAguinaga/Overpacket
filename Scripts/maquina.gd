@@ -7,6 +7,8 @@ extends StaticBody3D
 @export var resulting_output_scene: PackedScene
 ## El tiempo en segundos que tarda el proceso.
 @export var processing_time: float = 2.0
+@export var light_color_on: Color = Color.CYAN 
+@export var light_color_off: Color = Color.CYAN 
 
 # --- Referencias a los Nodos Hijos ---
 @onready var detection_area: Area3D = $colBox
@@ -16,6 +18,8 @@ extends StaticBody3D
 @onready var inCol: CollisionShape3D = $inCol
 @onready var pushArea: Area3D = $pushArea
 @onready var pushPos: Marker3D = $pushPos
+@onready var audioEf: AudioStreamPlayer3D = $soundEffects
+@onready var lights: Node3D = $lights
 # --- Estado Interno ---
 var is_processing: bool = false
 
@@ -27,6 +31,7 @@ func _ready() -> void:
 	timer.timeout.connect(on_processing_finished)
 	# Configuramos el timer para que solo se dispare una vez por cada inicio.
 	timer.one_shot = true
+	set_all_spotlight_colors_recursive(lights, light_color_off)
 
 
 ## Esta función se ejecuta cuando un cuerpo (jugador, caja) entra en el Area3D.
@@ -44,7 +49,9 @@ func on_body_entered(body: Node3D) -> void:
 		
 		inCol.disabled = false
 		pushArea.monitoring = true
+		set_all_spotlight_colors_recursive(lights, light_color_on)
 		animplayer.play("closeopen")
+		audioEf.play(0.0)
 		
 		# "Consumimos" el objeto de entrada (lo eliminamos de la escena).
 		body.queue_free()
@@ -64,6 +71,7 @@ func on_processing_finished() -> void:
 		printerr("No se ha asignado 'resulting_output_scene' en la máquina.")
 		inCol.disabled = true
 		pushArea.monitoring = false
+		set_all_spotlight_colors_recursive(lights, light_color_off)
 		is_processing = false # Liberamos la máquina
 		return
 
@@ -80,10 +88,24 @@ func on_processing_finished() -> void:
 	# Liberamos la máquina para que pueda aceptar un nuevo objeto.
 	is_processing = false
 	inCol.disabled = true
+	set_all_spotlight_colors_recursive(lights, light_color_off)
 	pushArea.monitoring = false
 	# (Opcional) Aquí podrías iniciar una animación o un sonido de "proceso completado".
-
 
 func _on_push_area_body_entered(body:  Node3D) -> void:
 	if body is Grabbable:
 		body.global_position = pushPos.global_position
+
+func set_all_spotlight_colors(color: Color):
+	for child in get_children():
+		if child is SpotLight3D:
+			child.light_color = color
+		elif child.has_node("."):
+			set_all_spotlight_colors_recursive(child, color)
+
+func set_all_spotlight_colors_recursive(node: Node, color: Color):
+	for child in node.get_children():
+		if child is SpotLight3D:
+			child.light_color = color
+		else:
+			set_all_spotlight_colors_recursive(child, color)

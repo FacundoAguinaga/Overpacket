@@ -1,8 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://bnueymtkbc5ql"]
+[gd_scene load_steps=21 format=3 uid="uid://bnueymtkbc5ql"]
 
 [ext_resource type="PackedScene" uid="uid://ddkae1ami3eqa" path="res://Assets/3D Models/maquina.glb" id="1_e2s8n"]
-[ext_resource type="Script" uid="uid://bqcdggqts7jgt" path="res://Scenes/maquina.gd" id="1_ny4sa"]
+[ext_resource type="Script" uid="uid://bqcdggqts7jgt" path="res://Scripts/maquina.gd" id="1_ny4sa"]
 [ext_resource type="Script" uid="uid://125y2c2k0ttr" path="res://Scripts/area_3d.gd" id="2_ny4sa"]
+[ext_resource type="AudioStream" uid="uid://xcabxboy1ayq" path="res://Assets/Audio/Sound Effects/11L-electric_engine_star-1751077731658.mp3" id="4_vdp2x"]
+[ext_resource type="Texture2D" uid="uid://c17dy7qlaf217" path="res://Assets/Textures/nube.png" id="5_eci00"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vdp2x"]
 size = Vector3(0.47509766, 2.1000001, 1.2)
@@ -35,6 +37,18 @@ tracks/1/path = NodePath("door2")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = PackedFloat32Array(0, 1, -0.041, -1, -0.49)
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("GPUParticles3D:process_material:linear_accel")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-2.2351742e-06, 0.99999774)]
+}
 
 [sub_resource type="Animation" id="Animation_vdp2x"]
 resource_name = "close"
@@ -71,6 +85,24 @@ material = SubResource("StandardMaterial3D_pwqxn")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ny4sa"]
 size = Vector3(0.7437891, 0.6709717, 0.22424316)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_toh6s"]
+emission_shape_scale = Vector3(0.1, 0.1, 0.1)
+direction = Vector3(0, 0, 0)
+radial_velocity_min = 0.49997765
+radial_velocity_max = 1.4999776
+gravity = Vector3(0, 0, 0)
+linear_accel_min = -2.2351742e-06
+linear_accel_max = 0.99999774
+scale_min = 0.25
+scale_max = 0.25
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lhsra"]
+transparency = 1
+albedo_texture = ExtResource("5_eci00")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_yaa7k"]
+material = SubResource("StandardMaterial3D_lhsra")
 
 [node name="processingMachine" type="StaticBody3D"]
 script = ExtResource("1_ny4sa")
@@ -152,5 +184,27 @@ disabled = true
 
 [node name="pushPos" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33571357, 1)
+
+[node name="soundEffects" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("4_vdp2x")
+max_distance = 25.0
+
+[node name="lights" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.0317262, 0)
+
+[node name="redLight" type="SpotLight3D" parent="lights"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0.53897303, 1.1267567, 0.24992508)
+light_color = Color(1, 0, 0, 1)
+shadow_enabled = true
+
+[node name="redLight2" type="SpotLight3D" parent="lights"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.6018133, 1.1267567, 0.06619686)
+light_color = Color(1, 0, 0, 1)
+shadow_enabled = true
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.0317262, 0)
+process_material = SubResource("ParticleProcessMaterial_toh6s")
+draw_pass_1 = SubResource("PlaneMesh_yaa7k")
 
 [connection signal="body_entered" from="pushArea" to="." method="_on_push_area_body_entered"]
