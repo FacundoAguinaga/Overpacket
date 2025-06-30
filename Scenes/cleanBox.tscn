@@ -4,7 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://bd1ln46j0lty7" path="res://Scenes/frictionParticles.tscn" id="2_xr6a7"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_phum5"]
-bounce = 0.9
+friction = 0.25
+rough = true
+absorbent = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_yfk0f"]
 

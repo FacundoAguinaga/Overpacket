@@ -1,0 +1,13 @@
+[gd_resource type="StandardMaterial3D" load_steps=4 format=3 uid="uid://bepppegr4im8f"]
+
+[ext_resource type="Texture2D" uid="uid://dcjhjgh1lltpi" path="res://Assets/Materials/redmetal_albedo.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://cysbhldkj1bcm" path="res://Assets/Materials/redmetal_orm.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://crkt1le7wnp4e" path="res://Assets/Materials/redmetal_normal.png" id="3"]
+
+[resource]
+albedo_texture = ExtResource("1")
+metallic = 0.16
+roughness_texture = ExtResource("2")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_texture = ExtResource("3")

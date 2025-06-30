@@ -19,8 +19,11 @@ sky_material = SubResource("ProceduralSkyMaterial_mq1bj")
 background_mode = 2
 sky = SubResource("Sky_iwv7r")
 tonemap_mode = 2
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
 glow_enabled = true
-volumetric_fog_enabled = true
 volumetric_fog_density = 0.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_p7j4p"]
@@ -88,7 +91,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.7, -3.5)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.7, -3.5)
 
 [node name="maquina" parent="." instance=ExtResource("6_kt01x")]
-transform = Transform3D(-8.742278e-08, 0, -2, 0, 2, 0, 2, 0, -8.742278e-08, 3.7, 1.3000001, -3.5)
+transform = Transform3D(-8.742278e-08, 0, -2, 0, 2, 0, 2, 0, -8.742278e-08, 3.7, 1.5324378, -3.5)
 required_input_scene = ExtResource("7_p7j4p")
 resulting_output_scene = ExtResource("3_707cn")
 processing_time = 4.0
